@@ -1,0 +1,146 @@
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+
+const questions = [ { id: 1, question: "Τι πιστεύεις ότι προκάλεσε την ανάφλεξη και τη φωτιά;", options: [ { text: "Δεν υπήρξε ανάφλεξη και φωτιά.", value: 0 }, { text: "Τα έλαια σιλικόνης των μετασχηματιστών σε συνδυασμό με το ηλεκτρικό τόξο.", value: 1 }, { text: "Ένα παράνομο φορτίο εύφλεκτων υδρογονανθράκων.", value: -1 } ] }, { id: 2, question: "Πόσα ήταν τα βαγόνια της εμπορικής αμαξοστοιχίας;", options: [ { text: "Είναι αδιάφορο πόσα ήταν τα βαγόνια της εμπορικής.", value: 0 }, { text: "Ήταν 13 πλατφόρμες, 3 φορτωμένες με λαμαρίνες και 10 φορτωμένες με κοντέινερς.", value: 1 }, { text: "Ήταν 14, υπήρχε ένα έξτρα κοντέινερ το οποίο εξαφανίστηκε.", value: -1 } ] }, { id: 3, question: "Έχουν χαθεί 11 λεπτά από τα καταγραφικά των συνομιλιών;", options: [ { text: "Όχι, δεν έχει χαθεί τίποτα.", value: 0 }, { text: "Κάποια ηχητικά λείπουν, αλλά είναι άσχετα με το επίμαχο διάστημα.", value: 1 }, { text: "Ναι, έχουν σβήσει τις επίμαχες συνομιλίες.", value: -1 } ] }, { id: 4, question: "Ποιος είναι ο πραγματικός αριθμός των νεκρών στα Τέμπη;", options: [ { text: "Δεν γνωρίζω ακριβώς, αλλά λιγότεροι σε σχέση με άλλες τραγωδίες.", value: 0 }, { text: "Είναι 57.", value: 1 }, { text: "Είναι σίγουρα πάνω από 57, καθώς υπάρχουν ορφανά δείγματα DNA.", value: -1 } ] }, { id: 5, question: "Τι μετέφερε η εμπορική αμαξοστοιχία;", options: [ { text: "Είναι αδιάφορο για την έρευνα το τι μετέφερε η εμπορική αμαξοστοιχία.", value: 0 }, { text: "Αυτά που ήταν δηλωμένα στα τιμολόγια: λαμαρίνες, ζωοτροφές, μπύρες, ακτινίδια, καλώδια.", value: 1 }, { text: "Εκτός από αυτά που ήταν δηλωμένα στα τιμολόγια, η εμπορική μετέφερε παράνομα υδρογονάνθρακες", value: -1 } ] }, { id: 6, question: "Πόσοι επιβάτες κάηκαν ζωντανοί στα Τέμπη;", options: [ { text: "Κανένας, όλοι σκοτώθηκαν με τη σύγκρουση.", value: 0 }, { text: "Αρκετοί, αλλά όχι όλοι όσοι βρέθηκαν απανθρακωμένοι", value: 1 }, { text: "Και οι 30 που βρέθηκαν απανθρακωμένοι είχαν επιβιώσει της σύγκρουσης και κάηκαν ζωντανοί.", value: -1 } ] }, { id: 7, question: "Τι έφταιξε στα Τέμπη;", options: [ { text: "Τα ανθρώπινα λάθη του σταθμάρχη και του μηχανοδηγού, και οι κλοπές καλωδίων από συγκεκριμένες ομάδες.", value: 0 }, { text: "Τα ανθρώπινα λάθη του σταθμάρχη και του μηχανοδηγού, και η απουσία των συστημάτων ασφαλείας.", value: 1 }, { text: "Είναι όλα κατασκευασμένα, τα Τέμπη ήταν μια μυστική πειραματική εφαρμογή ενός όπλου νέας τεχνολογίας", value: -1 } ] }, { id: 8, question: "Όταν μπήκε στη λάθος γραμμή ο μηχανοδηγός, σταμάτησε και ζήτησε επιβεβαίωση;", options: [ { text: "Ναι, ρώτησε Βασίλη φεύγω; και ο Σταθμάρχης του απάντησε Φεύγεις, ακούσαμε τα ηχητικά στις ειδήσεις.", value: 0 }, { text: "Όχι, δεν σταμάτησε ούτε ζήτησε επιβεβαίωση.", value: 1 }, { text: "Ναι, σταματήσε και συνομίλησε, αλλά έχουν σβήσει τις συνομιλίες για να τον ενοχοποιήσουν.", value: -1 } ] }, { id: 9, question: "Πιστεύεις ότι υπάρχουν ποινικές ευθύνες πολιτικών προσώπων για τα Τέμπη;", options: [ { text: "Όχι, δεν υπάρχουν. Δεν οδηγούσαν οι Υπουργοί το τρένο ούτε το έβαλαν αυτοί σε λάθος γραμμή.", value: 0 }, { text: "Ναι, για το γεγονός ότι δεν εγκαταστάθηκαν στο χρόνο που έπρεπε τα συστήματα ασφαλείας.", value: 1 }, { text: "Ναι, γιατί είναι μπλεγμένοι σε παράνομο λαθρεμπόριο καυσίμων.", value: -1 } ] }, { id: 10, question: "Για ποιο λόγο πιστεύεις ότι δεν πρόκειται να τιμωρηθούν πολιτικά πρόσωπα για τα Τέμπη;", options: [ { text: "Γιατί δεν έχουν καμία ευθύνη για το τραγικό αυτό δυστύχημα.", value: 0 }, { text: "Γιατί οι συσχετισμοί στην παρούσα Βουλή δεν το επιτρέπουν.", value: 1 }, { text: "Γιατί καλύπτονται από τη βουλευτική ασυλία.", value: -1 } ] }];
+const PersonalityTest = () => {
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [answers, setAnswers] = useState({});
+  const [error, setError] = useState("");
+  const [showResult, setShowResult] = useState(false);
+  const [score, setScore] = useState(0);
+
+  const handleAnswer = (value) => {
+    setAnswers({ ...answers, [currentQuestion]: value });
+    setError("");
+  };
+
+  const calculateScore = () => {
+    const totalScore = Object.values(answers).reduce((acc, curr) => acc + curr, 0);
+    return (totalScore / 10).toFixed(2);
+  };
+
+  const handleNavigation = (direction) => {
+    if (direction === "next" && currentQuestion < questions.length - 1) {
+      if (answers[currentQuestion] === undefined) {
+        setError("Πρέπει να επιλέξεις μία απάντηση για να συνεχίσεις");
+        return;
+      }
+      setCurrentQuestion(currentQuestion + 1);
+    } else if (direction === "prev" && currentQuestion > 0) {
+      setCurrentQuestion(currentQuestion - 1);
+    }
+  };
+
+  const handleSubmit = () => {
+    if (Object.keys(answers).length < questions.length) {
+      setError("Πρέπει να απαντήσεις όλες τις ερωτήσεις πριν συνεχίσεις");
+      return;
+    }
+    setScore(calculateScore());
+    setShowResult(true);
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-100 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-lg p-6 md:p-8">
+        {!showResult ? (
+          <>
+            <div className="mb-8">
+              <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
+                <motion.div
+                  className="bg-blue-600 h-2 rounded-full"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
+                  transition={{ duration: 0.5 }}
+                />
+              </div>
+              <p className="text-gray-500 text-sm text-center">
+                Question {currentQuestion + 1} of {questions.length}
+              </p>
+            </div>
+
+            <div className="space-y-6">
+              <h2 className="text-2xl font-semibold text-gray-800 text-center">
+                {questions[currentQuestion].question}
+              </h2>
+
+              <div className="space-y-4" role="radiogroup" aria-label="Question options">
+                {questions[currentQuestion].options.map((option, index) => (
+                  <motion.button
+                    key={index}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => handleAnswer(option.value)}
+                    className={`w-full p-4 text-left rounded-lg transition-colors ${answers[currentQuestion] === option.value
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-50 hover:bg-gray-100 text-gray-700"}`}
+                    role="radio"
+                    aria-checked={answers[currentQuestion] === option.value}
+                  >
+                    {option.text}
+                  </motion.button>
+                ))}
+              </div>
+
+              {error && (
+                <p className="text-red-500 text-center" role="alert">
+                  {error}
+                </p>
+              )}
+
+              <div className="flex justify-between mt-8">
+                <button
+                  onClick={() => handleNavigation("prev")}
+                  disabled={currentQuestion === 0}
+                  className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <FaArrowLeft className="mr-2" /> Προηγούμενη Ερώτηση
+                </button>
+
+                {currentQuestion === questions.length - 1 ? (
+                  <button
+                    onClick={handleSubmit}
+                    className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                  >
+                    Submit
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleNavigation("next")}
+                    className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+                  >
+                    Επόμενη ερώτηση <FaArrowRight className="ml-2" />
+                  </button>
+                )}
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="text-center space-y-6">
+            <h2 className="text-2xl font-bold text-gray-800">Τέμπη: Πόσο κοντά είσαι στην αλήθεια;;</h2>
+            <div className="relative h-4 bg-gray-200 rounded-full mx-auto max-w-md">
+              <div
+                className="absolute h-6 w-6 bg-blue-600 rounded-full top-1/2 transform -translate-y-1/2"
+                style={{
+                  left: `${((parseFloat(score) + 1) / 2) * 100}%`,
+                  transition: "left 1s ease-out"
+                }}
+              />
+              <div className="absolute w-full flex justify-between text-xs text-gray-600 mt-6">
+                <span>(-1)Ψέματα και fake news</span>
+                <span>(0)</span>
+                <span>Αλήθεια (+1)</span>
+              </div>
+            </div>
+            <p className="text-s font-medium text-gray-500 mt-8">
+              Ο βαθμός σου στα Τέμπη είναι: {score}
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default PersonalityTest;
