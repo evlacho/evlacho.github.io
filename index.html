@@ -232,18 +232,18 @@
                 scoreIndicator.style.left = `${(normalizedScore + 10) * 5}%`;
     
                 if (normalizedScore > 9) {
-                    scoreDescription.textContent = "Είσαι πολύ κοντά στην αλήθεια.";
+                    scoreDescription.textContent = "Είσαι πολύ κοντά στην αλήθεια για τα Τέμπη.";
                 } else if (normalizedScore > 5) {
-                    scoreDescription.textContent = "Τα περισσότερα που γνωρίζεις είναι σωστά.";
+                    scoreDescription.textContent = "Τα περισσότερα που γνωρίζεις για τα Τέμπη είναι σωστά.";
                 } else if (normalizedScore > 0) {
-                    scoreDescription.textContent = "Είσαι μακριά από την αλήθεια, αλλά έχεις αποφύγει τα περισσότερα fake news";
+                    scoreDescription.textContent = "Είσαι μακριά από την αλήθεια, αλλά τουλάχιστον έχεις αποφύγει τα περισσότερα fake news.";
                 } else if (normalizedScore > -4) {
-                    scoreDescription.textContent = "Έχεις πιστέψει αρκετά ψέματα και fake news";
+                    scoreDescription.textContent = "Έχεις πιστέψει αρκετά ψέματα και fake news.";
                 } else if (normalizedScore > -8) {
-                    scoreDescription.textContent = "Έχεις πιστέψει τα περισσότερα ψέματα και fake news";
+                    scoreDescription.textContent = "Έχεις πιστέψει τα περισσότερα ψέματα και fake news.";
 
                 } else {
-                    scoreDescription.textContent = "Είσαι φουλ Ψεκ. Ποτέ μην γίνεσαι φούλ Ψεκ";
+                    scoreDescription.textContent = "Έχεις παραπληροφορηθεί πλήρως σχετικά με τα Τέμπη.";
                 }
     
                 // Show the results
